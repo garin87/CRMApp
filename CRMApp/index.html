@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>CRM App</title>
+</head>
+<body>
+
+    <div>
+        <h2>All Customers</h2>
+        <ul id="customers" />
+    </div>
+    <div>
+        <h2>Search by ID</h2>
+        <form>
+            <label for="">Customer Id:
+                <input type="text" id="customerId" size="5" />
+            </label>
+            <button id="but" value="Search" onclick="find();">Search</button>
+            <p id="customer"></p>
+        </form>  
+    </div>
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script>
+
+    var uri = 'api/customers';
+
+    function getOptions() {
+        let uri = 'api/customers';
+        let result = fetch(uri)
+        .then(function (response) {
+            if (!response.ok) {
+                throw new Error("HTTP error, status = " + response.status);
+            }
+            return response.json();
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+        return result;
+    }
+
+    document.getElementById("but").addEventListener('click', function () {
+        getOptions()
+        .then(function (json) {
+            console.log(json.item.FirstName);
+        });
+    });
+
+
+        /*
+         
+
+    $(document).ready(function () {
+      // Send an AJAX request
+      $.getJSON(uri)
+          .done(function (data) {
+            // On success, 'data' contains a list of customers.
+            $.each(data, function (key, item) {
+              // Add a list item for the customers.
+                $('<li>', { text: formatItem(item) }).appendTo($('#customers'));
+            });
+          });
+    });
+
+    function formatItem(item) {
+        return 'Customer (' + item.CustomerID + ') ' + item.FirstName + ' ' + item.LastName;
+    }
+
+    function find() {
+      var id = $('#customerId').val();
+      $.getJSON(uri + '/' + id)
+          .done(function (data) {
+            $('#customers').text(formatItem(data));
+          })
+          .fail(function (jqXHR, textStatus, err) {
+            $('#customers').text('Error: ' + err);
+          });
+    }
+    */
+    </script>
+</body>
+</html>
